@@ -1,0 +1,5 @@
+a: "xxdjdj"
+db:
+  name: master2
+  addr: "127.0.0.1:6379"
+  db_num: 0
