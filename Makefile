@@ -1,5 +1,5 @@
-api:
-	go run main.go api
+gin:
+	go run main.go gin
 redis:
 	go run main.go redis
 
