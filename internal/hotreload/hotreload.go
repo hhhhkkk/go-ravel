@@ -2,8 +2,6 @@ package hotreload
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"sync/atomic"
 	"time"
 
@@ -62,30 +60,31 @@ func Run(ctx context.Context) error {
 		default: // 已经排过队了，这个事件合并掉
 		}
 	})
-	ticker := time.Tick(1 * time.Second)
+	// run real something
+	return ctx.Err()
+	// ticker := time.Tick(1 * time.Second)
+	// for {
+	// 	select {
+	// 	case <-ticker:
+	// 		r, ok := s.vp.Load().(*realResult)
+	// 		if !ok {
+	// 			return fmt.Errorf("realResult is error")
+	// 		}
 
-	for {
-		select {
-		case <-ticker:
-			r, ok := s.vp.Load().(*realResult)
-			if !ok {
-				return fmt.Errorf("realResult is error")
-			}
-
-			fmt.Printf("%s\n", r.config.A)
-			fmt.Printf("db name: %s\n", r.config.Db.Name)
-			value, err := r.conn.Get(ctx, "test").Result()
-			if err != nil {
-				if errors.Is(err, redis.Nil) {
-					continue
-				}
-				return err
-			}
-			fmt.Println(value)
-		case <-ctx.Done():
-			return ctx.Err()
-		}
-	}
+	// 		fmt.Printf("%s\n", r.config.A)
+	// 		fmt.Printf("db name: %s\n", r.config.Db.Name)
+	// 		value, err := r.conn.Get(ctx, "test").Result()
+	// 		if err != nil {
+	// 			if errors.Is(err, redis.Nil) {
+	// 				continue
+	// 			}
+	// 			return err
+	// 		}
+	// 		fmt.Println(value)
+	// 	case <-ctx.Done():
+	// 		return ctx.Err()
+	// 	}
+	// }
 }
 
 func new(v *viper.Viper) (*LongLive, error) {

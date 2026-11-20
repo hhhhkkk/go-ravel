@@ -2,14 +2,26 @@ package ginapi
 
 import "github.com/gin-gonic/gin"
 
-type GinApiEngine struct {
-	engine *gin.Engine
+type IServer interface {
+	RegistryRoute(gin *gin.Engine)
 }
 
-func Init() *GinApiEngine {
+type GinApiEngine struct {
+	engine     *gin.Engine
+	serverList []IServer
+}
+
+func newEngine() *GinApiEngine {
 	return &GinApiEngine{
-		engine: gin.Default(),
+		engine:     gin.Default(),
+		serverList: make([]IServer, 0),
 	}
+}
+
+func Run() {
+	engine := newEngine()
+
+	engine.serverList = append(engine.serverList)
 }
 
 // func (g *GinApiEngine)
